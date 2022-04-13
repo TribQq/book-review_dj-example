@@ -4,3 +4,5 @@ __pycache__/
 .idea
 requirements.txt
 .git
+br/migrations
+users/migrations

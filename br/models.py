@@ -17,8 +17,11 @@ class Author(models.Model):
         else:
             parts = [self.first_name, self.last_name]
         return " ".join(parts)
+
 class Genre(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    plural_name = models.CharField(max_length=50, unique=True)
+
     def __str__(self):
         return self.name
 class Book(models.Model):
@@ -30,7 +33,6 @@ class Book(models.Model):
     pub_date = models.DateField(null=True, blank=True)
     description = models.TextField(max_length=1024, blank=True)
     slug = models.SlugField(max_length=50)
-
     class Meta:
         unique_together = ['title', 'pub_date']
     def is_published(self):
@@ -51,9 +53,7 @@ class Review(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     pub_date = models.DateField(auto_now=True)
     public = models.BooleanField(default=True)
-
     class Meta:
         unique_together = ['book', 'owner']
-
     def __str__(self):
         return self.title

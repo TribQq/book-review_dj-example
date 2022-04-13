@@ -1,55 +1,46 @@
 import datetime
-from itertools import chain
+import re
 
 from django.views import generic
-from django.db.models import Avg, Count, Q, Value as V
+from django.db.models import Avg, Count
 
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.models import User
-from .models import Book, Review, Author
-from .search import search
+from .models import Book, Review
+from .search import search_categories, search, split_results
 
 
 class IndexListView(generic.list.ListView):
     template_name = 'br/index.html'
     context_object_name = 'anticipated_books'
-
     def get_queryset(self):
         all_books = Book.objects.all()
         anticipated_books = get_anticipated(all_books)
         return anticipated_books
-
-
 class RecentListView(generic.list.ListView):
     template_name = 'br/recent.html'
     context_object_name = 'recent_books'
-
     def get_queryset(self):
         all_books = Book.objects.all()
         published_books = get_published(all_books)
         annotated_books = add_annotations(published_books)
         return annotated_books.order_by('-pub_date', 'title')
-
 class PopularListView(generic.list.ListView):
     template_name = 'br/popular.html'
     context_object_name = 'popular_books'
-
     def get_queryset(self):
         all_books = Book.objects.all()
         published_books = get_published(all_books)
         annotated_books = add_annotations(published_books)
         return annotated_books.order_by('-num_reviews', 'title')
-
 class RatingListView(generic.list.ListView):
     template_name = 'br/rating.html'
     context_object_name = 'best_rated_books'
-
     def get_queryset(self):
         all_books = Book.objects.all()
         published_books = get_published(all_books)
         annotated_books = add_annotations(published_books)
         return annotated_books.order_by('-avg_rating', 'title')
-
 class BookDetailView(generic.detail.DetailView):
     model = Book
     query_pk_and_slug = True
@@ -128,13 +119,12 @@ class ReviewDeleteView(generic.edit.DeleteView):
     def get_success_url(self):
         book = get_object_or_404(Book, id=self.kwargs['pk'], slug=self.kwargs['slug'])
         return book.get_absolute_url()
-
 class SearchTemplateView(generic.base.TemplateView):
     template_name = 'br/search.html'
     context_object_name = 'results'
 
     def get(self, request, *args, **kwargs):
-        if 'q' not in self.request.GET:
+        if not self.request.GET.get('q'):
             return redirect('br:index')
         return super().get(request, *args, **kwargs)
 
@@ -142,25 +132,28 @@ class SearchTemplateView(generic.base.TemplateView):
         context = super().get_context_data(**kwargs)
         q = self.request.GET['q']
 
-        if 'category' in self.request.GET:
-            category = self.request.GET['category']
-        else:
-            category = None
+        category = self.request.GET.get('category')
+        current_year = datetime.date.today().year
         results = search(q, category)
-        context['q'] = q
-        context['results'] = results
+        published, anticipated = split_results(results)
+
+        context.update({
+            'q': q,
+            'available_categories': search_categories,
+            'category': category,
+            'current_year': current_year,
+            'published': published,
+            'anticipated': anticipated,
+        })
+
         return context
 
 
 def get_published(books_set):
     today = datetime.date.today()
     return books_set.filter(pub_date__lte=today)
-
-
 def get_anticipated(books_set):
     today = datetime.date.today()
     return books_set.filter(pub_date__gt=today)
-
-
 def add_annotations(books_set):
     return books_set.annotate(num_reviews=Count('review'), avg_rating=Avg('review__rating'))
