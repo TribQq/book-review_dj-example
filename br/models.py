@@ -1,8 +1,10 @@
 import datetime
+
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
 from django.contrib.auth.models import User
+
+
 class Author(models.Model):
     first_name = models.CharField(max_length=50)
     patronymic = models.CharField(max_length=50, blank=True)
@@ -17,11 +19,9 @@ class Author(models.Model):
         else:
             parts = [self.first_name, self.last_name]
         return " ".join(parts)
-
 class Genre(models.Model):
     name = models.CharField(max_length=50, unique=True)
     plural_name = models.CharField(max_length=50, unique=True)
-
     def __str__(self):
         return self.name
 class Book(models.Model):
@@ -35,8 +35,10 @@ class Book(models.Model):
     slug = models.SlugField(max_length=50)
     class Meta:
         unique_together = ['title', 'pub_date']
+
     def is_published(self):
-        return self.pub_date < datetime.date.today()
+        return self.pub_date <= datetime.date.today()
+
     def get_absolute_url(self):
         kwargs = {'pk': self.id, 'slug': self.slug}
         return reverse('br:book', kwargs=kwargs)
