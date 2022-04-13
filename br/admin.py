@@ -1,19 +1,18 @@
 from django.contrib import admin
 from .models import Author, Genre, Book, Review
 
-
 class ReviewInline(admin.StackedInline):
     model = Review
-    extra = 2
+    extra = 1
 
 
 class BookAuthor(admin.TabularInline):
-    model = Book.author.through
+    model = Book.authors.through
     extra = 1
 
 
 class BookGenre(admin.TabularInline):
-    model = Book.genre.through
+    model = Book.genres.through
     extra = 1
 
 
@@ -31,7 +30,7 @@ class BookAdmin(admin.ModelAdmin):
         BookGenre,
         ReviewInline
     ]
-    exclude = ('author', 'genre',)
+    exclude = ('authors', 'genres',)
 
 
 admin.site.register(Book, BookAdmin)

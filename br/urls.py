@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-
 app_name = 'br'
 urlpatterns = [
     path('', views.IndexTemplateView.as_view(), name='index'),
@@ -8,4 +7,5 @@ urlpatterns = [
     path('popular/', views.PopularListView.as_view(), name='popular'),
     path('ratings/', views.RatingTemplateView.as_view(), name='ratings'),
     path('search/', views.SearchTemplateView.as_view(), name='search'),
+    path('book/<slug:slug>', views.BookDetailView.as_view(), name='book')
 ]
