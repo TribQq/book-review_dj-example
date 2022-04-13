@@ -2,25 +2,14 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.contrib.auth.models import User
-
-
 class Author(models.Model):
     first_name = models.CharField(max_length=50)
     patronymic = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50)
     # Born year is needed for namesake cases
     born = models.DateField()
-
     class Meta:
         unique_together = ['first_name', 'patronymic', 'last_name', 'born']
-
-    def save(self, *args, **kwargs):
-        if self.patronymic:
-            name_parts = [self.first_name, self.patronymic, self.last_name]
-        else:
-            name_parts = [self.first_name, self.last_name]
-        self.full_name = ' '.join(name_parts)
-        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.last_name
@@ -39,25 +28,21 @@ class Book(models.Model):
     description = models.TextField(max_length=1024, blank=True)
     # set of users who already reviewed this book, so they can't do it again.
     reviewed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    slug = models.SlugField(max_length=40, null=True)
+    slug = models.SlugField(max_length=50)
 
     class Meta:
         unique_together = ['title', 'pub_date']
 
     def get_absolute_url(self):
-        return reverse('br:book', kwargs={'slug': self.slug})
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify((self.title + ' ' + str(self.pub_date.year)), allow_unicode=True)
-        return super().save(*args, **kwargs)
+        kwargs = {
+            'pk': self.id,
+            'slug': self.slug
+        }
+        return reverse('br:book', kwargs=kwargs)
 
     def __str__(self):
         return self.title
-
-
 rates = [(i, i) for i in range(1, 6)]
-
-
 class Review(models.Model):
     title = models.CharField(max_length=60)
     # One review can only refer to one book while one book can have many reviews
@@ -68,6 +53,5 @@ class Review(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     pub_date = models.DateField(auto_now=True)
     public = models.BooleanField(default=True)
-
     def __str__(self):
         return self.title

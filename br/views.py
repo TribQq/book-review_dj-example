@@ -8,11 +8,8 @@ class IndexTemplateView(generic.base.TemplateView):
 class RecentListView(generic.list.ListView):
     template_name = 'br/recent.html'
     context_object_name = 'recent_books'
-
     def get_queryset(self):
         return Book.objects.annotate(num_reviews=Count('review'), avg_rating=Avg('review__rating')).order_by('-pub_date')
-
-
 class PopularListView(generic.list.ListView):
     template_name = 'br/popular.html'
     context_object_name = 'popular_books'
@@ -32,7 +29,7 @@ class SearchTemplateView(generic.base.TemplateView):
         # search algoritms and adding results to context
         return context
 
-
 class BookDetailView(generic.detail.DetailView):
     model = Book
+    query_pk_and_slug = True
     template_name = 'br/book.html'
