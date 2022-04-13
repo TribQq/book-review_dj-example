@@ -1,5 +1,4 @@
 import datetime
-
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
@@ -12,15 +11,12 @@ class Author(models.Model):
     born = models.DateField()
     class Meta:
         unique_together = ['first_name', 'patronymic', 'last_name', 'born']
-
     def __str__(self):
         if self.patronymic:
             parts = [self.first_name, self.patronymic, self.last_name]
         else:
             parts = [self.first_name, self.last_name]
         return " ".join(parts)
-
-
 class Genre(models.Model):
     name = models.CharField(max_length=50, unique=True)
     def __str__(self):
@@ -33,19 +29,15 @@ class Book(models.Model):
     language = models.CharField(max_length=50)
     pub_date = models.DateField(null=True, blank=True)
     description = models.TextField(max_length=1024, blank=True)
-    # set of users who already reviewed this book, so they can't do it again.
-    reviewed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=50)
+
     class Meta:
         unique_together = ['title', 'pub_date']
-
     def is_published(self):
         return self.pub_date < datetime.date.today()
-
     def get_absolute_url(self):
         kwargs = {'pk': self.id, 'slug': self.slug}
         return reverse('br:book', kwargs=kwargs)
-
     def __str__(self):
         return self.title
 rates = [(i, i) for i in range(1, 6)]
@@ -59,5 +51,9 @@ class Review(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     pub_date = models.DateField(auto_now=True)
     public = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ['book', 'owner']
+
     def __str__(self):
         return self.title
