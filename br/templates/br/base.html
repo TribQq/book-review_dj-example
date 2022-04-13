@@ -8,7 +8,7 @@
 <a href="{% url 'br:index' %}">Book review</a>
 <a href="{% url 'br:recent' %}">Recent</a>
 <a href="{% url 'br:popular' %}">Popular</a>
-<a href="{% url 'br:ratings' %}">Ratings</a>
+<a href="{% url 'br:ratings' %}">Best rated</a>
 <form method="get" action="{% url 'br:search' %}">
     <input type="search" name="search" placeholder="Book, author, genre...">
     <button name="Submit">Search</button>
@@ -20,7 +20,6 @@ Hello, {{user.username|title}}!
 <a href="{% url 'users:login' %}?next={{request.path}}">Login</a>
 <a href="{% url 'users:register' %}?next={{request.path}}">Register</a>
 {% endif %}
-
 {% block content %} {% endblock content %}
 </body>
 </html>
