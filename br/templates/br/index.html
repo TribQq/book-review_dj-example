@@ -4,9 +4,10 @@
     <div class="mb-3">
         <h1>Welcome to the Book Review!</h1>
     </div>
+
     <div class="row g-0 mb-5">
         <div class="col-md order-md-1 mb-3 mb-md-0">
-            <img src="{% static 'custom/img/main.png' %}" class="img-fluid">
+            <img src="{% static 'custom/img/main.png' %}" class="img-fluid" alt="">
         </div>
         <div class="col-md-4 col-lg-5 order-md-0">
             <div class="d-block d-md-none d-lg-block">
@@ -33,26 +34,18 @@
         </div>
     </div>
 {% endblock page_header %}
-
 {% block content %}
-
-
     {% if paginator.count %}
         <div class="pb-1 mb-4 border-bottom">
             <h2>Most anticipated books</h2>
         </div>
         <ul>
             {% for book in anticipated_books %}
-
                 <li>{% include 'br/book_card.html' %}</li>
             {% endfor %}
         </ul>
         {% include 'br/pagination.html' %}
-
     {% else %}
-
         <h4>No books are anticipated at the moment.</h4>
-
     {% endif %}
-
 {% endblock content %}

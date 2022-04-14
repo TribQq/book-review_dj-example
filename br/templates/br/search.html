@@ -1,69 +1,51 @@
 {%  extends 'br/base.html' %}
+{% load static %}
+
+
+{% block page_header %}
+    <div class="pb-1 mb-4 border-bottom">
+        <h2>Search results</h2>
+    </div>
+{% endblock page_header %}
 {% block content %}
+    {% if results %}
+        <h4>
+            {% if category == 'book' %}Books found by title
+            {% elif category == 'author' %}Books written by «{{q}}»
+            {% elif category == 'genre' %}Books in «{{q}}» genre
+            {% elif category == 'year' %}Books of «{{q}}» year
+            {% elif category == 'any' %}Books found on «{{q}}» request
+            {% endif %}
+            ({{ paginator.count }}):
+        </h4>
+        <ul>
+            {% for book in page_obj %}
+                <li>{% include 'br/book_card.html' %}</li>
+            {% endfor %}
+        </ul>
 
-{% if results %}
+    {% elif category in SEARCH_CATEGORIES %}
 
-<h2>
-    {% if category == 'book' %}Books found by title
-    {% elif category == 'author' %}Books written by {{q}}
-    {% elif category == 'genre' %}{{q}} genre
-    {% elif category == 'year' %}Books of {{q}} year
-    {% elif category is None %}Searching results for «{{q}}»
-    {% elif category %}There is no such category in database
+        <h4>Nothing found for «{{q}}»... except these kittens.</h4>
+        <div class="d-flex justify-content-center">
+            <img src="{% static 'custom/img/search.jpg' %}" style="max-height: 360px;" alt="">
+        </div>
+
+    {% else %}
+
+        <h4>No such category</h4>
+        <p>
+            Please choose among
+            {% for category in SEARCH_CATEGORIES %}
+                {% if forloop.revcounter > 2 %}
+                    «{{ category }}»,
+                {% elif forloop.revcounter == 2 %}
+                    «{{ category }}» or
+                {% else %}
+                    «{{ category }}».
+                {% endif %}
+            {% endfor %}
+        </p>
     {% endif %}
-</h2>
-
-{% else %}
-
-<h2>Nothing found for «{{q}}» :(</h2>
-
-{% endif %}
-
-{% if published %}
-{% if category != 'year' %}<h3>Published books:</h3>{% endif %}
-{% with published_ends=published|stringformat:'s' %}
-    {% with published_slice=':'|add:published_ends %}
-        <ul>
-        {% for book in results|slice:published_slice reversed %}
-            <li>{% include 'br/book_bar.html' with category=category %}</li>
-        {% endfor %}
-        </ul>
-    {% endwith %}
-{% endwith %}
-{% endif %}
-
-{% if published < results|length %}
-{% if category != 'year' %}<h3>Anticipated books:</h3>{% endif %}
-{% with published_ends=published|stringformat:'s' %}
-    {% with anticipated_slice=published_ends|add:':' %}
-        <ul>
-        {% for book in results|slice:anticipated_slice %}
-            <li>{% include 'br/book_bar.html' %}</li>
-        {% endfor %}
-        </ul>
-    {% endwith %}
-{% endwith %}
-{% endif %}
-
-{% if paginator.num_pages > 1 %}
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?{{request.GET.urlencode}}&page=1">&laquo; first</a>
-            <a href="?{{request.GET.urlencode}}&page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?{{request.GET.urlencode}}&page={{ page_obj.next_page_number }}">next</a>
-            <a href="?{{request.GET.urlencode}}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
-{% endif %}
-
-
+    {% include 'br/pagination.html' %}
 {% endblock content %}
