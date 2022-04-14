@@ -9,16 +9,21 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 import dj_database_url
 from pathlib import Path
+from dotenv import load_dotenv
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-3tgbz5+n+$9#t2p6qaxa%(7*ffl$=h2dx!v3jqy3h@tgz4(#3_'
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '3tgbz5+n+$9#t2p6qaxa%(7*ffl$=h2dx!v3jqy3h@tgz4(#3_')
+load_dotenv()
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
+
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+DEBUG = True
+
 ALLOWED_HOSTS = [
     'localhost',
     'book-review-django.herokuapp.com',
@@ -42,7 +47,6 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
 ]
-
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 MIDDLEWARE = [
@@ -106,19 +110,18 @@ USE_L10N = True
 USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/')]
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'hffkcj4ji',
-    'API_KEY': '411256521369896',
-    'API_SECRET': '3-qasM9SuXxswh5v2KZQJ3o3TQI',
+    'CLOUD_NAME': str(os.getenv('CLOUD_NAME')),
+    'API_KEY': str(os.getenv('API_KEY')),
+    'API_SECRET': str(os.getenv('API_SECRET')),
 }
+
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
