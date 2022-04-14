@@ -1,15 +1,10 @@
 import datetime
 from operator import attrgetter
-
 from django.views import generic
-
-
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.models import User
 from .models import Book, Review
 from .search import search_categories, search, add_annotations
-
-
 class IndexListView(generic.list.ListView):
     template_name = 'br/index.html'
     context_object_name = 'anticipated_books'
@@ -17,13 +12,10 @@ class IndexListView(generic.list.ListView):
         all_books = Book.objects.all()
         anticipated_books = get_anticipated(all_books)
         return anticipated_books.order_by('pub_date', 'title')
-
-
 class RecentListView(generic.list.ListView):
     template_name = 'br/recent.html'
     context_object_name = 'recent_books'
     paginate_by = 10
-
     def get_queryset(self):
         all_books = Book.objects.all()
         published_books = get_published(all_books)
@@ -33,7 +25,6 @@ class PopularListView(generic.list.ListView):
     template_name = 'br/popular.html'
     context_object_name = 'popular_books'
     paginate_by = 10
-
     def get_queryset(self):
         all_books = Book.objects.all()
         published_books = get_published(all_books)
@@ -43,7 +34,6 @@ class RatingListView(generic.list.ListView):
     template_name = 'br/rating.html'
     context_object_name = 'best_rated_books'
     paginate_by = 10
-
     def get_queryset(self):
         all_books = Book.objects.all()
         published_books = get_published(all_books)
@@ -127,45 +117,48 @@ class ReviewDeleteView(generic.edit.DeleteView):
     def get_success_url(self):
         book = get_object_or_404(Book, id=self.kwargs['pk'], slug=self.kwargs['slug'])
         return book.get_absolute_url()
-
-
 class SearchListView(generic.list.ListView):
     template_name = 'br/search.html'
     context_object_name = 'results'
     paginate_by = 10
 
     def get(self, request, *args, **kwargs):
+        print(self.request.GET)
         if not self.request.GET.get('q'):
             return redirect('br:index')
         return super().get(request, *args, **kwargs)
-
     def get_queryset(self):
         q = self.request.GET['q']
         category = self.request.GET.get('category')
         results = search(q, category)
         return sorted(results, key=attrgetter('pub_date'))
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         results = context['results']
         published = count_published(results)
-
         context.update({
             'q': self.request.GET['q'],
             'category': self.request.GET.get('category'),
             'available_categories': search_categories,
             'published': published,
         })
-
         return context
+
+
+class HeyTemplateView(generic.base.TemplateView):
+    template_name = 'br/hey.html'
+
+    def get(self, request, *args, **kwargs):
+        print(self.request.GET)
+        return super().get(request, *args, **kwargs)
+
+
 def get_published(books_set):
     today = datetime.date.today()
     return books_set.filter(pub_date__lte=today)
 def get_anticipated(books_set):
     today = datetime.date.today()
     return books_set.filter(pub_date__gt=today)
-
-
 def count_published(results):
     published = 0
     for book in results:
