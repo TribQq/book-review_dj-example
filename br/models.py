@@ -22,8 +22,11 @@ class Author(models.Model):
         help_text='YYYY-MM-DD',
         validators=[MaxValueValidator(limit_value=datetime.date.today)]
     )
+
     class Meta:
         unique_together = ['first_name', 'patronymic', 'last_name', 'born']
+        ordering = ['first_name']
+
     def __str__(self):
         """
         String representation is an author's full name.
@@ -38,14 +41,19 @@ class Genre(models.Model):
     Book genre model.
     """
     name = models.CharField(max_length=50, unique=True)
+
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return self.name
+
 class Book(models.Model):
     """
     Book model.
     """
-    title = models.CharField(max_length=100, help_text='In English')
-    original_title = models.CharField(max_length=100, help_text="If it's different", null=True, blank=True)
+    title = models.CharField(max_length=100)
+    original_title = models.CharField(max_length=100, null=True, blank=True)
     # Book might have multiple authors, so many-to-many relationship is chosen.
     authors = models.ManyToManyField(Author)
     genres = models.ManyToManyField(Genre)
