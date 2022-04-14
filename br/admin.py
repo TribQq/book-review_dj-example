@@ -1,8 +1,5 @@
 from django.contrib import admin
-from django import forms
 from .models import Author, Genre, Book, Review
-
-
 class ReviewInline(admin.StackedInline):
     model = Review
     extra = 1
@@ -21,17 +18,16 @@ class GenreAdmin(admin.ModelAdmin):
         BookGenre,
     ]
 
-
 class BookAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('title',)}
+    prepopulated_fields = {
+        'slug': ('title',)
+    }
     inlines = [
         BookAuthor,
         BookGenre,
         ReviewInline
     ]
     exclude = ('authors', 'genres')
-
-
 admin.site.register(Book, BookAdmin)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Genre, GenreAdmin)

@@ -12,7 +12,6 @@
                 <img src="{{ book.small_img.url }}" class="card-img rounded {% if book.small_img.url|slice:'-22:' == 'default-book-small.jpg' %}border{% endif %} d-block d-sm-none" alt="{{ book.title }}">
             </div>
             <div class="col-sm container-fluid pt-1 mt-sm-0">
-
                 <div class="row g-0">
                     {% if book.is_published %}
                         <div class="col-auto order-md-1">
@@ -46,7 +45,7 @@
                 {% endif %}
                 <p>Country: {{ book.country }}</p>
                 <p>Original language: {{ book.language }}</p>
-                {% if book.title != book.original_title %}
+                {% if book.original_title %}
                     <p>Original title: «{{ book.original_title }}»</p>
                 {% endif %}
                 {% if book.pages %}
