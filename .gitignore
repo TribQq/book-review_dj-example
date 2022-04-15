@@ -5,3 +5,6 @@ __pycache__/
 .git
 br/migrations
 users/migrations
+
+# staticfiles folder
+staticfiles/
