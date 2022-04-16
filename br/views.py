@@ -7,7 +7,7 @@ from .models import Book, Review
 from book_review.custom.annotations import BOOKS
 from book_review.custom.search import SEARCH_CATEGORIES, search
 from .forms import SearchForm
-from .constants import BOOKS_PER_PAGE, REVIEWS_PER_PAGE
+from .custom.constants import BOOKS_PER_PAGE, REVIEWS_PER_PAGE
 
 
 class IndexListView(generic.list.ListView):
