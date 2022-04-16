@@ -4,10 +4,7 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-
 from .custom.constants import RATINGS
-
-
 def get_sentinel_user():
     """
     If user is deleted replaces 'owner' field in Review model with 'deleted user' object.
@@ -34,10 +31,7 @@ class Author(models.Model):
         parts = [self.first_name, self.last_name]
         if self.patronymic:
             parts.insert(1, self.patronymic)
-
         return " ".join(parts)
-
-
 class Genre(models.Model):
     """
     Book genre model.
@@ -65,30 +59,24 @@ class Book(models.Model):
     small_img = models.ImageField(upload_to='img/book_img/small/', default='img/book_img/small/default-book-small.jpg')
     pages = models.PositiveIntegerField(null=True, blank=True)
     slug = models.SlugField(max_length=80)
-
     class Meta:
         unique_together = ['title', 'pub_date']
         ordering = ['title']
-
     def is_published(self):
         """
         Returns True if book is already published. False if anticipated
         """
         return self.pub_date <= datetime.date.today()
-
     def get_absolute_url(self):
         """
         Slug and pk are used together since different books may have identical titles.
         """
-        return reverse('br:book', kwargs={
+        return reverse('book_review:book', kwargs={
             'pk': self.pk,
             'slug': self.slug
         })
-
     def __str__(self):
         return self.title
-
-
 class Review(models.Model):
     """
     Review model. Unique constraint is on book-owner fields,

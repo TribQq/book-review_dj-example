@@ -4,7 +4,7 @@ from django.urls import path, re_path
 from django.contrib.auth.decorators import login_required
 from . import views
 
-app_name = 'br'
+app_name = 'book_review'
 urlpatterns = [
     # Index page.
     path('', views.IndexListView.as_view(), name='index'),

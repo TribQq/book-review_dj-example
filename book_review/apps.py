@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class BrConfig(AppConfig):
+class BookReviewConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'br'
+    name = 'book_review'

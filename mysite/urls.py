@@ -18,7 +18,7 @@ urlpatterns = [
     # admin urls
     path('admin/', admin.site.urls),
     # book_review urls
-    path('', include('br.urls')),
+    path('', include('book_review.urls')),
     # users urls
     path('', include('users.urls'))
 ]
