@@ -1,5 +1,8 @@
 from django.contrib import admin
+
 from .models import Author, Genre, Book, Review
+
+
 class ReviewInline(admin.StackedInline):
     model = Review
     extra = 1
@@ -17,7 +20,6 @@ class GenreAdmin(admin.ModelAdmin):
     inlines = [
         BookGenre,
     ]
-
 class BookAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         'slug': ('title',)
