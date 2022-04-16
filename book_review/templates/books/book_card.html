@@ -8,7 +8,6 @@
         </div>
         <div class="col-sm container-fluid">
             <div class="card-body">
-
                 <div class="row g-0">
                     <div class="col-md">
                         <h5 class="card-title">
@@ -22,7 +21,6 @@
                         {% endfor %}
                         </p>
                     </div>
-
                     <div class="col-auto mb-3">
                         {% if book.is_published and book.avg_rating %}
                             <span>Rating: {{book.avg_rating|floatformat:2}}
@@ -36,9 +34,9 @@
                 </div>
 
                 <div class="card-text">
-                    {% if book.description|length > 650 %}
-                        <p>{{ book.description|slice:':650' }}<span id="dots{{ book.id }}">...</span><span class="textContinuation" id="more{{ book.id }}">{{ book.description|slice:'650:'}}</span>
-                            <a class="text-nowrap orange-link" onclick="myFunction({{ book.id }})" id="myBtn{{ book.id }}">Read more</a>
+                    {% if book.description|length > 700 %}
+                        <p>{{ book.description|slice:':700' }}<span id="dots{{ book.id }}">...</span><span class="textContinuation" id="more{{ book.id }}">{{ book.description|slice:'700:'}}</span>
+                            <a class="text-nowrap read-more-link" onclick="myFunction({{ book.id }})" id="myBtn{{ book.id }}">Read more</a>
                         </p>
                     {% else %}
                         <p>{{ book.description }}</p>
