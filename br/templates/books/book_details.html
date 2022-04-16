@@ -1,11 +1,10 @@
-{% extends 'general/base.html' %}
+{% extends 'br/base.html' %}
 
 {% block page_header %}
     <div class="pb-1 mb-4 border-bottom">
         <h2>{{book.title}}</h2>
     </div>
 {% endblock page_header %}
-
 {% block content %}
     <div>
         <div class="row g-3 mb-3" style="border: 0.125rem solid transparent">
@@ -14,7 +13,6 @@
                 <img src="{{ book.small_img.url }}" class="card-img rounded {% if book.small_img.url|slice:'-22:' == 'default-book-small.jpg' %}border{% endif %} d-block d-sm-none" alt="{{ book.title }}">
             </div>
             <div class="col-sm container-fluid pt-1 mt-sm-0">
-
                 <div class="row g-0">
                     {% if book.is_published %}
                         <div class="col-auto order-md-1">
@@ -28,26 +26,23 @@
                             </p>
                         </div>
                     {% endif %}
-
                     <div class="col-md order-md-0">
                         <p>Author{{ book.authors.all|length|pluralize }}:
                             {% for author in book.authors.all %}
-                                <a class="text-nowrap book-field-link" href="{% url 'book_review:search' %}?q={{author}}&category=author">{{author}}</a>{% if not forloop.last %},{% endif %}
+                                <a class="text-nowrap book-field-link" href="{% url 'br:search' %}?q={{author}}&category=author">{{author}}</a>{% if not forloop.last %},{% endif %}
                             {% endfor %}
-
                         </p>
                     </div>
                 </div>
-
                 <p>Genre{{ book.genres.all|length|pluralize }}:
                     {% for genre in book.genres.all %}
-                        <a class="book-field-link" href="{% url 'book_review:search' %}?q={{genre}}&category=genre">{% if forloop.first %}{{ genre }}{% else %}{{genre|lower}}{% endif %}</a>{% if not forloop.last %},{% endif %}
+                        <a class="book-field-link" href="{% url 'br:search' %}?q={{genre}}&category=genre">{% if forloop.first %}{{ genre }}{% else %}{{genre|lower}}{% endif %}</a>{% if not forloop.last %},{% endif %}
                     {% endfor %}
                 </p>
                 {% if book.is_published %}
-                    <p>Publication year: <a class="book-field-link" href="{% url 'book_review:search' %}?q={{book.pub_date.year}}&category=year">{{book.pub_date.year}}</a></p>
+                    <p>Publication year: <a class="book-field-link" href="{% url 'br:search' %}?q={{book.pub_date.year}}&category=year">{{book.pub_date.year}}</a></p>
                 {% else %}
-                    <p>Expected at {{book.pub_date|date:'F'}} {{book.pub_date.day}}, <a class="book-field-link" href="{% url 'book_review:search' %}?q={{book.pub_date.year}}&category=year">{{book.pub_date.year}}</a></p>
+                    <p>Expected at {{book.pub_date|date:'F'}} {{book.pub_date.day}}, <a class="book-field-link" href="{% url 'br:search' %}?q={{book.pub_date.year}}&category=year">{{book.pub_date.year}}</a></p>
                 {% endif %}
                 <p>Country: {{ book.country }}</p>
                 <p>Original language: {{ book.language }}</p>
@@ -77,19 +72,18 @@
                     {% endif %}
                 </h4>
             </div>
-
             <div class="col-auto mb-2">
                 {% if reviews.0.owner != request.user %}
-                    <a href="{% url 'book_review:add_review' book.id book.slug %}" class="btn btn-color">Add new review</a>
+                    <a href="{% url 'br:add_review' book.id book.slug %}" class="btn btn-color">Add new review</a>
                 {% endif %}
             </div>
         </div>
 
         {% for review in page_obj %}
-            {% include 'reviews/review_card.html' %}
+            {% include 'br/review_card.html' %}
         {% endfor %}
     {% else %}
         <h4>Reviews can be written as soon as the book is published</h4>
     {% endif %}
-    {% include 'general/pagination.html' %}
+    {% include 'br/pagination.html' %}
 {% endblock content %}
