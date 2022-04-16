@@ -1,15 +1,17 @@
-{% extends "br/base.html" %}
+{% extends "general/base.html" %}
+
+{% block page_header %}
+    <h2>Registration page</h2>
+{% endblock page_header %}
 
 {% block content %}
-
-<h1>Registration page</h1>
-{% if form.errors %}
-<p>Invalid data Please try again.</p>
-{% endif %}
-<form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button name="submit">Register</button>
-</form>
-
+    {% load crispy_forms_tags %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="col-md-5 mb-0">
+            {{ form|crispy }}
+        </div>
+        <button class="btn btn-color" name="submit">Sign up</button>
+        <span class="ms-2" style="color: #6c757d;">Already a member? - <a class="orange-link" href="{% url 'users:login' %}">Log in</a></span>
+    </form>
 {% endblock content %}
