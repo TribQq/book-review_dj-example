@@ -22,7 +22,6 @@ class IndexListView(generic.list.ListView):
         today = datetime.date.today()
         anticipated_books = annotated_books.filter(pub_date__gt=today)
         return anticipated_books.order_by('pub_date', 'title')
-
 class BooksListView(generic.list.ListView):
     """
     Return list of published books ordered according to provided url argument.
@@ -49,7 +48,6 @@ class BooksListView(generic.list.ListView):
         if order_value is None:
             raise Http404
         return published_books.order_by(order_value, 'title')
-
 class BookDetailView(generic.detail.DetailView):
     """
     Return a particular book and list of reviews for it.
@@ -75,9 +73,12 @@ class BookDetailView(generic.detail.DetailView):
         context.update({
             'paginator': paginator,
             'page_obj': page_obj,
+            'is_paginated': True,
             'reviews': reviews,
         })
         return context
+
+
 class ReviewCreateView(generic.edit.CreateView):
     """
     Create new review on a book.
