@@ -1,14 +1,14 @@
 """
 This module provides two annotated query sets:
 Annotated books and annotated authors.
+Both sets are used in search function.
+Annotated books are also needed to order books by specific value
+(such as average rating value of all reviews, number of reviews etc.)
 """
 
 from django.db.models import Avg, Count, Value
 from django.db.models.functions import Coalesce, Concat
-
 from book_review.models import Book, Author
-
-
 def get_annotated_books(books_queryset):
     """
     Annotates Book model with 2 fields.
@@ -22,8 +22,6 @@ def get_annotated_books(books_queryset):
         avg_rating=avg_rating
     )
     return annotated_books_queryset
-
-
 def get_annotated_authors(authors_queryset):
     """
     Annotates Author model with 2 fields.
@@ -37,7 +35,5 @@ def get_annotated_authors(authors_queryset):
         short_name=author_short_name
     )
     return annotated_authors_queryset
-
-
 annotated_books = get_annotated_books(Book.objects.all())
 annotated_authors = get_annotated_authors(Author.objects.all())
