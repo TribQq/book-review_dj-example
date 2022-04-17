@@ -1,9 +1,7 @@
 {% extends "general/base.html" %}
-
 {% block page_header %}
     <h2>Login page</h2>
 {% endblock page_header %}
-
 {% block content %}
     {% load crispy_forms_tags %}
     <form method="post">
@@ -11,7 +9,6 @@
         <div class="col-md-4 mb-0">
             {{ form|crispy }}
         </div>
-        <button class="btn btn-color" name="submit">Log in</button>
-        <span class="ms-2" style="color: #6c757d;">Not a member yet? - <a class="orange-link" href="{% url 'users:register' %}">Sign up</a></span>
+        <button class="btn btn-color" name="submit">Login</button>
     </form>
 {% endblock content %}

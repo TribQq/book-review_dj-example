@@ -33,15 +33,17 @@ ul {
 .book-field-link:hover {
    color: orange;
 }
-/*Read more - read less links*/
-.read-more-link {
+
+/*Orange links*/
+.orange-link {
    cursor: pointer;
-   color: orange;
+   color: #e67e00;
    text-decoration-style: dotted;
 }
-.read-more-link:hover {
+.orange-link:hover {
    color: orange;
 }
+
 /*Review links*/
 .review-link {
    color: var(--dark-gray);
@@ -116,7 +118,7 @@ ul {
 }
 .footer-link {
    color: var(--light-black);
-   padding: 0.5rem 1rem;
+   margin: 0 1rem;
    text-decoration: none;
    white-space: nowrap;
 }
@@ -159,6 +161,8 @@ ul {
    border-color: var(--light-green);
    box-shadow: none;
 }
+
+
 /*Hides a part of text in read more/read less blocks*/
 .textContinuation {
    display: none;
@@ -177,8 +181,7 @@ ul {
        border-color: lightgray;
        box-shadow: none;
    } 
-
-
+   
 /*Book icon font*/
 @font-face {
  font-family: 'icomoon';
@@ -191,7 +194,6 @@ ul {
  font-style: normal;
  font-display: block;
 }
-
 [class^="icon-"]::before, [class*=" icon-"]::before {
  /* use !important to prevent issues with browser extensions that change fonts */
  font-family: 'icomoon' !important;
@@ -201,12 +203,10 @@ ul {
  font-variant: normal;
  text-transform: none;
  line-height: 1;
-
  /* Better Font Rendering =========== */
  -webkit-font-smoothing: antialiased;
  -moz-osx-font-smoothing: grayscale;
 }
-
 .icon-book:before {
  content: "\e900";
 }
