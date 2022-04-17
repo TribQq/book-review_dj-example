@@ -3,13 +3,14 @@ from django.conf.urls.static import static
 from django.urls import path, re_path
 from django.contrib.auth.decorators import login_required
 from . import views
-
 app_name = 'book_review'
 urlpatterns = [
     # Index page.
     path('', views.IndexListView.as_view(), name='index'),
+
     # Books lists pages.
-    re_path(r'^(?P<sort_type>(recent|popular|best_rated))/$', views.BooksListView.as_view(), name='books_list'),
+    path('published_books/', views.BooksListView.as_view(), name='books_list'),
+
     # Book detail page.
     re_path(r'^book/(?P<pk>\d+)-(?P<slug>[\w-]+)/$', views.BookDetailView.as_view(), name='book'),
     # Create, edit and delete review pages.
