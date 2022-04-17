@@ -14,16 +14,22 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+
+# Allows any user to run app locally. Differs from secret key used in production.
+GUEST_SECRET_KEY = 'django-insecure-ljfi=)o$9bwe(-m80k-v)qu$qx2e3oao5g(==w@ahxf4zpyp6r'
+
+SECRET_KEY = config('SECRET_KEY', default=GUEST_SECRET_KEY)
+
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = config('DEBUG', default='False') == 'True'
 ALLOWED_HOSTS = [
     'localhost',
     'book-review-django.herokuapp.com',
 ]
 # Application definition
-
 INSTALLED_APPS = [
     # Book_review app.
     'book_review.apps.BookReviewConfig',
