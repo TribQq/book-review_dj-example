@@ -123,7 +123,7 @@ CLOUDINARY_STORAGE = {
     'API_KEY': config('API_KEY', default=''),
     'API_SECRET': config('API_SECRET', default=''),
 }
-DEFAULT_FILE_STORAGE = config('FILE_STORAGE')
+DEFAULT_FILE_STORAGE = config('FILE_STORAGE', default='django.core.files.storage.FileSystemStorage')
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
