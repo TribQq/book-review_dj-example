@@ -46,7 +46,7 @@ class Book(models.Model):
     Book model.
     """
     title = models.CharField(max_length=100)
-    original_title = models.CharField(max_length=100, null=True, blank=True)
+    original_title = models.CharField(max_length=100, blank=True)
     # Book might have multiple authors, so many-to-many relationship is used.
     authors = models.ManyToManyField(Author)
     genres = models.ManyToManyField(Genre)
@@ -62,13 +62,11 @@ class Book(models.Model):
     class Meta:
         unique_together = ['title', 'pub_date']
         ordering = ['title']
-
     def is_published(self):
         """
         Returns True if book is already published.
         """
         return self.pub_date <= datetime.date.today()
-
     def get_absolute_url(self):
         # Using slug only is not safe enough since different books may have identical titles.
         # Using id only is not giving informative url for user,
@@ -79,7 +77,6 @@ class Book(models.Model):
         })
     def __str__(self):
         return self.title
-
 class Review(models.Model):
     """
     Review model.
@@ -94,11 +91,9 @@ class Review(models.Model):
         on_delete=models.SET(get_sentinel_user)
     )
     pub_date = models.DateField(auto_now_add=True)
-
     class Meta:
         # Put unique constraint on book and owner fields,
         # since each user may only have 1 review on each book.
         unique_together = ['book', 'owner']
-
     def __str__(self):
         return self.title
