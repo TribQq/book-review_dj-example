@@ -1,4 +1,6 @@
 from django import forms
+
+
 class SearchForm(forms.Form):
     """
     Sends data to SearchListView via GET method.

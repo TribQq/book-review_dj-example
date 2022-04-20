@@ -1,5 +1,6 @@
 {%  extends 'general/base.html' %}
 {% load static %}
+
 {% block page_header %}
     <div class="pb-1 mb-4 border-bottom">
         <h2>
@@ -11,15 +12,21 @@
         </h2>
     </div>
 {% endblock page_header %}
+
 {% block content %}
     {% if paginator.count %}
+
         <ul>
             {% for book in page_obj %}
+
                 <li>{% include 'books/book_card.html' %}</li>
             {% endfor %}
         </ul>
+
         {% include 'general/pagination.html' %}
+
     {% else %}
         <h4>There are no published books in app database.</h4>
     {% endif %}
 {% endblock content %}
+

@@ -1,6 +1,9 @@
 <div class="card mb-3">
+
     <div class="card-header">
+
         <div class="row g-0">
+
             <div class="col-md">
                 <p class="mb-0 text-muted">
                     {% if request.path == '/my_reviews/' %}
@@ -12,6 +15,7 @@
                     {% endif %}
                 </p>
             </div>
+
             <div class="col-auto">
                 {% if review.owner == request.user %}
                     <p class="mb-0">
@@ -22,8 +26,11 @@
                     </p>
                 {% endif %}
             </div>
+
         </div>
+
     </div>
+
     <div class="card-body">
         <h5 class="card-title">{{review.title}}</h5>
         <p class="card-text">Rating: {{ review.rating }}/5</p>
@@ -37,4 +44,5 @@
             {% endif %}
         </div>
     </div>
+
 </div>

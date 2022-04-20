@@ -5,9 +5,10 @@
         <h2>New review on «{{book.title}}»</h2>
     </div>
 {% endblock page_header %}
+
 {% block content %}
     {% load crispy_forms_tags %}
-    <form method="post" action="{% url 'br:add_review' book.id book.slug %}">
+    <form method="post" action="{% url 'book_review:add_review' book.id book.slug %}">
         {% csrf_token %}
         <div class="col-md-1 mb-0">
             {{ form.rating|as_crispy_field }}

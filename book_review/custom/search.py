@@ -1,6 +1,7 @@
 from django.db.models import Q
 from book_review.custom.annotations import annotated_books, annotated_authors
 
+
 def search(q, category):
     """
     Return queryset of books by a given query. Books are sorted by average reviews rating and title.
@@ -15,15 +16,19 @@ def search(q, category):
 
     if category == 'book':
         results = annotated_books.filter(title__icontains=q)
+
     elif category == 'author':
         results = annotated_books.filter(
             Q(authors__in=annotated_authors.filter(full_name__icontains=q)) |
             Q(authors__in=annotated_authors.filter(short_name__icontains=q))
         )
+
     elif category == 'genre':
         results = annotated_books.filter(genres__name__icontains=q)
+
     elif category == 'year':
         results = annotated_books.filter(pub_date__year__icontains=q)
+
     elif category == 'any':
         results = annotated_books.filter(
             Q(title__icontains=q) |
@@ -32,6 +37,8 @@ def search(q, category):
             Q(genres__name__icontains=q) |
             Q(pub_date__year__icontains=q)
         )
+
     else:
         results = annotated_books.none()
+
     return results.order_by('-avg_rating', 'title')
