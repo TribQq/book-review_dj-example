@@ -36,3 +36,9 @@ Provide an opportunity for users to read and write reviews on the books of inter
 ## Testing:
 All tests are written with **pytest** framework and **pytest-django** plugin.<br>
 To run tests locally use `pytest` command in terminal.
+
+#### Heroku verison:
+##### /admin: 
+###### username: adm 
+###### password: adm
+######  all other users paswords: Password123#

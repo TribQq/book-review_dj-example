@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from django.conf.urls import url
+from django.conf import settings
+
 urlpatterns = [
     # admin urls
     path('admin/', admin.site.urls),
@@ -24,3 +27,15 @@ urlpatterns = [
     # users urls
     path('', include('users.urls'))
 ]
+
+if settings.DEBUG:
+    from django.contrib.staticfiles.views import serve
+    urlpatterns.append(path('static/<path:path>', never_cache(serve)))
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # маршрут для обработки выгруженных файлов
+else: # only for heroku , if deploy + nginx/apache need refactor
+    from django.views.static import serve as serve
+    urlpatterns.extend([
+        url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+        url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),   
+    ])
+    
