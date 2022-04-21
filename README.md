@@ -1,4 +1,6 @@
 # Book Review django application
+###### Heroku [link](https://djbookreview.herokuapp.com/)
+
 ## Main purpose:
 Provide an opportunity for users to read and write reviews on the books of interest.
 ## Key concepts:
@@ -37,7 +39,7 @@ Provide an opportunity for users to read and write reviews on the books of inter
 All tests are written with **pytest** framework and **pytest-django** plugin.<br>
 To run tests locally use `pytest` command in terminal.
 
-#### Heroku verison:
+#### Heroku verison [link](https://djbookreview.herokuapp.com/):
 ##### /admin: 
 ###### username: adm 
 ###### password: adm
