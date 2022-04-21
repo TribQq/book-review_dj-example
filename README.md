@@ -41,6 +41,6 @@ To run tests locally use `pytest` command in terminal.
 
 #### Heroku verison [link](https://djbookreview.herokuapp.com/):
 ##### /admin: 
-###### username: adm 
-###### password: adm
+* ###### username: adm 
+* ###### password: adm
 ######  all other users paswords: Password123#
