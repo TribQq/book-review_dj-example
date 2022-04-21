@@ -9,7 +9,6 @@ app_name = 'book_review'
 urlpatterns = [
     # Index page and list of anticipated books.
     path('', views.IndexListView.as_view(), name='index'),
-
     # List of published books ordered according to provided url argument.
     path('published_books/', views.BooksListView.as_view(), name='books_list'),
 

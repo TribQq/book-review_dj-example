@@ -7,12 +7,15 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import generic
 from django.http import Http404
+from urllib3 import HTTPResponse
 
 from .models import Book, Review
 from .custom.annotations import annotated_books
 from .custom.search import search
 from .forms import SearchForm
 from .custom.constants import BOOKS_PER_PAGE, REVIEWS_PER_PAGE, SEARCH_CATEGORIES
+
+# from django.http import HttpResponse # test plug
 
 
 class IndexListView(generic.list.ListView):
